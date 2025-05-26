@@ -1,7 +1,7 @@
 import { OutLink, OutLinkFormData } from '../types';
 
 const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? window.location.origin
+  ? '' // 상대 경로 사용
   : 'http://localhost:3001';
 
 class ApiService {

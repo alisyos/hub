@@ -15,6 +15,42 @@ interface OutLinkContextType {
 
 const OutLinkContext = createContext<OutLinkContextType | undefined>(undefined);
 
+// Fallback 데이터
+const fallbackOutLinks: OutLink[] = [
+  {
+    id: '1',
+    name: 'GPT 에이전트',
+    description: 'AI 기반 대화형 에이전트 서비스',
+    isApplied: true,
+    category: 'AI 서비스',
+    userPageUrl: 'https://agent.gptko.co.kr',
+    adminPageUrl: 'https://admin.agent.gptko.co.kr',
+    createdAt: new Date('2024-01-01'),
+    updatedAt: new Date('2024-01-01'),
+  },
+  {
+    id: '2',
+    name: '번역 서비스',
+    description: '다국어 번역 및 언어 학습 플랫폼',
+    isApplied: false,
+    category: '언어 서비스',
+    userPageUrl: 'https://translate.example.com',
+    adminPageUrl: 'https://admin.translate.example.com',
+    createdAt: new Date('2024-01-02'),
+    updatedAt: new Date('2024-01-02'),
+  },
+  {
+    id: '3',
+    name: '문서 관리',
+    description: '클라우드 기반 문서 관리 시스템',
+    isApplied: true,
+    category: '생산성',
+    userPageUrl: 'https://docs.example.com',
+    createdAt: new Date('2024-01-03'),
+    updatedAt: new Date('2024-01-03'),
+  },
+];
+
 export const OutLinkProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [outLinks, setOutLinks] = useState<OutLink[]>([]);
   const [loading, setLoading] = useState(true);
@@ -40,7 +76,11 @@ export const OutLinkProvider: React.FC<{ children: ReactNode }> = ({ children })
       setOutLinks(processedData);
     } catch (err) {
       console.error('데이터 로드 실패:', err);
-      setError(err instanceof Error ? err.message : '데이터 로드에 실패했습니다.');
+      console.log('Fallback 데이터 사용');
+      
+      // API 실패 시 fallback 데이터 사용
+      setOutLinks(fallbackOutLinks);
+      setError('서버 연결에 실패했습니다. 기본 데이터를 표시합니다.');
     } finally {
       setLoading(false);
     }
